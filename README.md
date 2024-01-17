@@ -29,4 +29,4 @@ How it Works
 
 The Color Sensor gives me 11 channels (Wavelengths) of color data, which then can be converted into RGB data which in turn can be used to create matching color hex codes.
 
-![](images/image6.png)![](images/image10.png)
+![](https://github.com/Abhsin/TECHIN514A-TwoDevices/blob/main/images/TopViewDisDev.png?raw=true)![](!https://github.com/Abhsin/TECHIN514A-TwoDevices/blob/main/images/DiskTurn.png?raw=true)
