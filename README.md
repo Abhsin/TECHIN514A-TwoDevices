@@ -3,7 +3,7 @@ ColorPick!
 
 ColorPick is a device that picks up colors from the real world, from physical objects and anything you put it on. It then displays the color you picked on a display device, which shows its corresponding hex code, and color harmonies as you desire, all based on the color theory. It is a perfect tool for industrial designers and makers to make their products as visually appealing as possible.
 
-The Sensor Device![](images/image1.png)
+The Sensor Device![](https://github.com/Abhsin/TECHIN514A-TwoDevices/blob/main/images/Sense%20Device%20Arch.png?raw=true)
 ---------------------------------------
 
 ![](images/image8.jpg)
