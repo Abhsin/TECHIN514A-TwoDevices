@@ -31,3 +31,5 @@ The Color Sensor gives me 11 channels (Wavelengths) of color data, which then ca
 
 ![](https://github.com/Abhsin/TECHIN514A-TwoDevices/blob/main/images/TopViewDisDev.png?raw=true)
 ![](https://github.com/Abhsin/TECHIN514A-TwoDevices/blob/main/images/DiskTurn.png?raw=true)
+
+
