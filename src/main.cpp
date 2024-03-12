@@ -15,12 +15,12 @@ BLECharacteristic* pCharacteristic = NULL;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 
-const int buttonPin = D1; // Pin D0
+const int buttonPin = D0; // Pin D0
 bool readingsEnabled = false; // Initial state: readings disabled
 bool lastButtonState = true; // Variable to store the previous state of the button
 
-#define SERVICE_UUID        "77ebfd25-c29f-4ad6-8849-575e1c90f284"
-#define CHARACTERISTIC_UUID "477093a8-75bb-4272-b396-aeb7439086f8"
+#define SERVICE_UUID        "80ce2fe1-195b-437d-b811-9e0bc9dca6ed"
+#define CHARACTERISTIC_UUID "41b23795-d294-432a-a5bd-5ddcdf444404"
 
 class MyServerCallbacks : public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -91,24 +91,36 @@ void loop() {
             return;
         }
 
-        // Get the red, green, and blue values and normalize them to fit within 8 bits
-        uint16_t red = map(as7341.getChannel(AS7341_CHANNEL_630nm_F7), 0, 65535, 0, 255);
-        uint16_t green = map(as7341.getChannel(AS7341_CHANNEL_555nm_F5), 0, 65535, 0, 255);
-        uint16_t blue = map(as7341.getChannel(AS7341_CHANNEL_480nm_F3), 0, 65535, 0, 255);
+        uint16_t rawRed = as7341.getChannel(AS7341_CHANNEL_630nm_F7);
+        uint16_t rawGreen = as7341.getChannel(AS7341_CHANNEL_555nm_F5);
+        uint16_t rawBlue = as7341.getChannel(AS7341_CHANNEL_480nm_F3);
 
-        // Convert to string for BLE characteristic
-        String rgbData = String(red) + "," + String(green) + "," + String(blue);
+        // Check if raw values are within the valid range
+        if (rawRed >= 0 && rawRed <= 65535 &&
+            rawGreen >= 0 && rawGreen <= 65535 &&
+            rawBlue >= 0 && rawBlue <= 65535) {
 
-        // Update BLE characteristic with RGB data
-        if (deviceConnected) {
-            pCharacteristic->setValue(rgbData.c_str());
-            pCharacteristic->notify();
-            Serial.print("Notifying RGB data: ");
-            Serial.println(rgbData);
+            // Map the raw values to the 0-255 range
+            uint16_t red = map(rawRed, 0, 65535, 0, 255);
+            uint16_t green = map(rawGreen, 0, 65535, 0, 255);
+            uint16_t blue = map(rawBlue, 0, 65535, 0, 255);
+
+            // Convert to string for BLE characteristic
+            String rgbData = String(red) + "," + String(green) + "," + String(blue);
+
+            // Update BLE characteristic with RGB data
+            if (deviceConnected) {
+                pCharacteristic->setValue(rgbData.c_str());
+                pCharacteristic->notify();
+                Serial.print("Notifying RGB data: ");
+                Serial.println(rgbData);
+            }
+
+            as7341.setLEDCurrent(12);
+            as7341.enableLED(true);
+            delay(1000); // Delay for readability, adjust as needed
+        } else {
+            Serial.println("Invalid raw channel values!");
         }
-
-        as7341.setLEDCurrent(12);
-        as7341.enableLED(false);
-        delay(1000); // Delay for readability, adjust as needed
     }
 }
